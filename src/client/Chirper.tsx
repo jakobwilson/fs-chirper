@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { IonIcon } from '@ionic/react';
+import { ellipsisHorizontalOutline } from 'ionicons/icons';
 
 
 
@@ -33,16 +35,23 @@ const ChirperApp = () => {
 
 
   return (
-    <div>
-      <h1>Chirp List</h1>
+    <div className='main'>
+      <h1 className='list__title'>Chirp List</h1>
       
-      <ul>
+      <ul className='main__list'>
         {chirps.map((chirp) => (
           <li key={chirp.id}>
-            <p>{chirp.content}</p>
-            <Link to={`/details/${chirp.id}`}>Details</Link>
-            <button>Edit</button>
-            <button>Delete</button>
+            <p className='chirp_content'>{chirp.content}</p>
+            
+            <span>
+              <div className='details__link'>
+              <Link to={`/details/${chirp.id}`}><IonIcon icon={ellipsisHorizontalOutline} className='details__icon' /></Link>
+              
+              </div>
+            
+
+            </span>
+            
           </li>
         ))}
       </ul>

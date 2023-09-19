@@ -1,12 +1,20 @@
 import * as React from "react";
+import Swal from "sweetalert2"; 
+import { useNavigate } from "react-router-dom"; 
+import { IonIcon } from '@ionic/react';
+import { sendOutline } from 'ionicons/icons';
 
-interface CreateChirpProps {}
+interface CreateChirpProps {
+  
+}
 
-const CreateChirp = (props:CreateChirpProps) => {
+const CreateChirp = (props: CreateChirpProps) => {
+  const nav = useNavigate(); 
+
   const [formData, setFormData] = React.useState({
-    userid: 9, 
+    userid: 7,
     content: "",
-    location: "", 
+    location: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -28,29 +36,52 @@ const CreateChirp = (props:CreateChirpProps) => {
         body: JSON.stringify(formData),
       });
       const msg = await res.json();
-      console.log(msg);
+      
+      
+      if (res.status === 201) {
+        
+        Swal.fire({
+          icon: "success",
+          title: "Chirp Created",
+          text: "Your chirp has been successfully created!",
+        });
+
+        
+        nav("/");
+      } else {
+        
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "An error occurred while creating your chirp.",
+        });
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div>
-      <form>
+    <div className="create">
+      <h1>Create Chirp</h1>
+      <form className="create__form">
         <input
           type="text"
           name="content"
-          placeholder="Chirp content"
+          placeholder="What is happening?"
           value={formData.content}
           onChange={handleChange}
         />
-        <textarea
+        <input
+          type="text"
           name="location"
           placeholder="Location"
           value={formData.location}
           onChange={handleChange}
         />
-        <button onClick={handleClick}>Submit</button>
+        <button className="create__form__btn" onClick={handleClick}>
+         <IonIcon icon={sendOutline} style={{ marginLeft: "3px" }} />
+        </button>
       </form>
     </div>
   );
